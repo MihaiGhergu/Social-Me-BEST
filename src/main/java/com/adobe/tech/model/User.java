@@ -33,7 +33,7 @@ public class User {
 
     public User(Boolean isArtist, String nickname, String firstName, String lastName, String email,
                 String password, String phoneNumber, String latitude, String longitude,
-                Map<String, Integer> interests, ArrayList<Integer> subscriptions) {
+                Map<String, Integer> interests) {
 
         this.isArtist = isArtist;
         this.nickname = nickname;
@@ -47,4 +47,6 @@ public class User {
         this.interests = new HashMap<>();
         this.subscriptions = new ArrayList<>();
     }
+
+    //to do subscribe
 }

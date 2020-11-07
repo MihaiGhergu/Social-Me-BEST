@@ -23,7 +23,7 @@ public class UserService {
                 new User(person.getIsArtist(), person.getNickname(), person.getFirstName(),
                             person.getLastName(), person.getEmail(), person.getPassword(),
                             person.getPhoneNumber(), person.getLatitude(), person.getLongitude(),
-                            person.getInterests(), person.getSubscriptions()));
+                            person.getInterests()));
         return  new UserResponseDTO(newUser.getId(), newUser.getIsArtist(),
                 newUser.getNickname(), newUser.getFirstName(), newUser.getLatitude(), newUser.getLongitude());
     }
@@ -32,9 +32,7 @@ public class UserService {
         System.out.println("CHECK "+logAccount);
         User user = userRespository.getUserByEmail(logAccount.getEmail());
         System.out.println(user);
-        if(user != null)
-            return false;
-        return true;
+        return user == null;
 
     }
 
@@ -67,6 +65,18 @@ public class UserService {
         return Math.sqrt(distance);
     }
 
+    public static <K,V extends Comparable<? super V>>
+    SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K,V> map) {
+        SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<>(
+                (e1, e2) -> {
+                    int res = e1.getValue().compareTo(e2.getValue());
+                    return res != 0 ? res : 1;
+                }
+        );
+        sortedEntries.addAll(map.entrySet());
+        return sortedEntries;
+    }
+
     public Set<Long> getClose(Long id) {
         User user = userRespository.getUserById(id);
         double latitude = Double.parseDouble(user.getLatitude());
@@ -74,7 +84,7 @@ public class UserService {
         Map<Long, Double> userDistances = new TreeMap<>();
         List<UserResponseDTO> allUsers = getAll();
         for (UserResponseDTO crtUser : allUsers) {
-            if(crtUser.getId() != id) {
+            if(!crtUser.getId().equals(id)) {
                 double dist = distance(latitude,
                                         Double.parseDouble(crtUser.getLatitude()),
                                         longitude,
@@ -83,7 +93,16 @@ public class UserService {
             }
         }
 
-        return userDistances.keySet();
+//         for (Map.Entry<Long, Double> entry : userDistances.entrySet()) {
+//            System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
+//        }
+
+        Set<Long> result = new HashSet<>();
+        for (Map.Entry<Long, Double> entry : entriesSortedByValues(userDistances)) {
+            result.add(entry.getKey());
+        }
+
+        return result;
     }
 //
 //    public List<BankAccountResponseDTO> getAll() {
