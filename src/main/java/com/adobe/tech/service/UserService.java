@@ -18,8 +18,6 @@ public class UserService {
     private UserRespository userRespository;
     private SessionRepository sessionRepository;
 
-
-
     public UserResponseDTO save(UserRequestDTO person) {
         if(!this.checkUser(person)) {
             return null;
@@ -29,8 +27,8 @@ public class UserService {
                             person.getLastName(), person.getEmail(), person.getPassword(),
                             person.getPhoneNumber(), person.getLatitude(), person.getLongitude(),
                             person.getInterests()));
-        return  new UserResponseDTO(newUser.getId(), newUser.getIsArtist(),
-                newUser.getNickname(), newUser.getFirstName(), newUser.getLatitude(), newUser.getLongitude());
+        return  new UserResponseDTO(newUser.getId(), newUser.getIsArtist(), newUser.getNickname(),
+                newUser.getFirstName(), newUser.getLatitude(), newUser.getLongitude(), newUser.getInterests());
     }
 
     public Boolean checkUser(UserRequestDTO logAccount) {
@@ -43,8 +41,8 @@ public class UserService {
 
     public List<UserResponseDTO> getAll() {
         List<UserResponseDTO> result = new ArrayList<>();
-        userRespository.findAll().forEach(x->result.add(new UserResponseDTO(x.getId(), x.getIsArtist(),
-                                             x.getNickname(), x.getFirstName(), x.getLatitude(), x.getLongitude())));
+        userRespository.findAll().forEach(x->result.add(new UserResponseDTO(x.getId(), x.getIsArtist(), x.getNickname(),
+                x.getFirstName(), x.getLatitude(), x.getLongitude(), x.getInterests())));
         return result;
     }
 
@@ -70,12 +68,21 @@ public class UserService {
         return Math.sqrt(distance);
     }
 
+    public static double similarity(ArrayList<Integer> interests1, ArrayList<Integer> interests2) {
+        double similarityIndex = 0.0;
+        for(int i = 0; i < 5; i++)
+            similarityIndex += (interests1.get(i) - interests2.get(i)) * (interests1.get(i) - interests2.get(i));
+
+        return Math.sqrt(similarityIndex);
+    }
+
     public static <K,V extends Comparable<? super V>>
     SortedSet<Map.Entry<K,V>> entriesSortedByValues(Map<K,V> map) {
         SortedSet<Map.Entry<K,V>> sortedEntries = new TreeSet<>(
                 (e1, e2) -> {
                     int res = e1.getValue().compareTo(e2.getValue());
-                    return res != 0 ? res : 1;
+                    int i = res != 0 ? res : 1;
+                    return i;
                 }
         );
         sortedEntries.addAll(map.entrySet());
@@ -84,7 +91,6 @@ public class UserService {
 
     public Set<UserResponseDTO> getClose(Long id) {
         User user = userRespository.getUserById(id);
-        System.out.println(user);
         double latitude = Double.parseDouble(user.getLatitude());
         double longitude = Double.parseDouble(user.getLongitude());
         Map<Long, Double> userDistances = new TreeMap<>();
@@ -98,21 +104,37 @@ public class UserService {
                 userDistances.put(crtUser.getId(), dist);
             }
         }
-//         for (Map.Entry<Long, Double> entry : userDistances.entrySet()) {
-//            System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
-//        }
+
+        return getUsersSorted(userDistances);
+    }
+
+    public Set<UserResponseDTO> getSimilar(Long id) {
+        User user = userRespository.getUserById(id);
+        ArrayList<Integer> interests = user.getInterests();
+        Map<Long, Double> userSimilarities = new TreeMap<>();
+        List<UserResponseDTO> allUsers = getAll();
+        for (UserResponseDTO crtUser : allUsers) {
+            if(!crtUser.getId().equals(id)) {
+                double similarity = similarity(interests, crtUser.getInterests());
+                userSimilarities.put(crtUser.getId(), similarity);
+            }
+        }
+
+        return getUsersSorted(userSimilarities);
+    }
+
+    private Set<UserResponseDTO> getUsersSorted(Map<Long, Double> usersMap) {
         Set<UserResponseDTO> result = new HashSet<>();
-        for (Map.Entry<Long, Double> entry : entriesSortedByValues(userDistances)) {
+        for (Map.Entry<Long, Double> entry : entriesSortedByValues(usersMap)) {
             User myuser = userRespository.getUserById(entry.getKey());
             result.add(new UserResponseDTO(myuser.getId(), myuser.getIsArtist(), myuser.getNickname(),
-                    myuser.getFirstName(), myuser.getLatitude(), myuser.getLongitude()));
+                    myuser.getFirstName(), myuser.getLatitude(), myuser.getLongitude(), myuser.getInterests()));
         }
 
         return result;
     }
 
     public String checkCredentials(UserLoginDTO credentials) {
-        System.out.println("AM PRIMIT CREDENTIALS "+credentials);
         User user = userRespository.getUserByEmail(credentials.getEmail());
         if (user == null)
             return null;
@@ -125,20 +147,4 @@ public class UserService {
         userRespository.save(user);
         return token;
     }
-//
-//    public List<BankAccountResponseDTO> getAll() {
-//        System.out.println("get all!!!====");
-//        List<BankAccountResponseDTO> result = new ArrayList<>();
-//        bankAccountRepository.findAll().forEach(x->result.add(new BankAccountResponseDTO(x.getId(), x.getAccountNumber(), x.getBalance())));
-//        return result;
-//    }
-//
-//
-//
-//    public BankAccountResponseDTO getById(Long id) {
-//        BankAccount res = bankAccountRepository.findById(id).orElse(null);
-//        if(res == null)
-//            return null;
-//        return new BankAccountResponseDTO(res.getId(), res.getAccountNumber(), res.getBalance());
-//    }
 }

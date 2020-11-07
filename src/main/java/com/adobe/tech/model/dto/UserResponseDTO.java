@@ -3,6 +3,8 @@ package com.adobe.tech.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
+
 @Data
 @AllArgsConstructor
 public class UserResponseDTO {
@@ -12,4 +14,5 @@ public class UserResponseDTO {
     private String firstName;
     private String latitude;
     private String longitude;
+    private ArrayList<Integer> interests;
 }

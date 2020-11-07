@@ -55,13 +55,22 @@ public class UserController {
 
     @GetMapping("/close/{token}")
     public ResponseEntity getCloseUsers(@PathVariable String token) {
-        System.out.println("GET NEARBYYY");
         Long id = sessionRepository.getSessionByToken(token).getUserId();
         if (id == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
         System.out.println("ID = "+id);
         Set<UserResponseDTO> response = userService.getClose(id);
         System.out.println("IN APROPIERE : "+ response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/similar/{token}")
+    public ResponseEntity getSimilarUsers(@PathVariable String token) {
+        Long id = sessionRepository.getSessionByToken(token).getUserId();
+        if (id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
+        Set<UserResponseDTO> response = userService.getSimilar(id);
+        System.out.println("SIMILARI : "+ response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
