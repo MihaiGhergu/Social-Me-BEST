@@ -3,7 +3,9 @@ package com.adobe.tech.service;
 import com.adobe.tech.model.Topic;
 import com.adobe.tech.model.dto.TopicRequestDTO;
 import com.adobe.tech.model.dto.TopicResponseDTO;
+import com.adobe.tech.repository.SessionRepository;
 import com.adobe.tech.repository.TopicRepository;
+import com.adobe.tech.repository.UserRespository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +17,21 @@ import java.util.List;
 public class TopicService {
 
     private TopicRepository topicRepository;
+    private SessionRepository sessionRepository;
+    private UserRespository userRespository;
 
     public TopicResponseDTO save(TopicRequestDTO topic) {
+        Long id = sessionRepository.getSessionByToken(topic.getToken()).getUserId();
         Topic newTopic = topicRepository.save(
-                new Topic(topic.getTopicTitle(), topic.getOwnerId()));
-        return  new TopicResponseDTO(newTopic.getId(), newTopic.getTopicTitle(),
-                newTopic.getOwnerId());
+                new Topic(topic.getTopicTitle(), userRespository.getUserById(id).getNickname()));
+        return  new TopicResponseDTO(newTopic.getId(), newTopic.getTopicTitle(), newTopic.getOwnerNickname());
     }
 
 
     public List<TopicResponseDTO> getAll() {
         List<TopicResponseDTO> result = new ArrayList<>();
-        topicRepository.findAll().forEach(x->result.add(new TopicResponseDTO(x.getId(), x.getTopicTitle(),
-                x.getOwnerId())));
+        topicRepository.findAll().forEach(x->result.add(new TopicResponseDTO(x.getId(),
+                                x.getTopicTitle(), x.getOwnerNickname())));
         return result;
     }
 

@@ -1,6 +1,8 @@
 package com.adobe.tech.controller;
 
+import com.adobe.tech.model.dto.UserLoginDTO;
 import com.adobe.tech.model.dto.UserRequestDTO;
+import com.adobe.tech.repository.SessionRepository;
 import com.adobe.tech.service.UserService;
 import com.adobe.tech.model.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.Set;
 @RequestMapping(path = "/socialme")
 public class UserController {
     private UserService userService;
+    private SessionRepository sessionRepository;
 
     @PostMapping("/register")
     public ResponseEntity registerPerson(@RequestBody UserRequestDTO person) {
@@ -47,19 +50,22 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/close/{id}")
-    public ResponseEntity getCloseUsers(@PathVariable Long id) {
+    @GetMapping("/close/{token}")
+    public ResponseEntity getCloseUsers(@PathVariable String token) {
+        Long id = sessionRepository.getSessionByToken(token).getUserId();
+        if (id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
         Set<Long> response = userService.getClose(id);
         System.out.println("IN APROPIERE : "+ response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity loginUser(@RequestBody BankAccountRequestDTO accountLogin) {
-//        BankAccountResponseDTO response = bankAccountService.checkUser(accountLogin);
-//        System.out.println("REZULTAT = "+response);
-//        return response != null ? ResponseEntity.status(HttpStatus.OK).body(response)
-//                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
-//    }
+
+    @PostMapping("/login")
+    public ResponseEntity loginUser(@RequestBody UserLoginDTO accountLogin) {
+        String response = userService.checkCredentials(accountLogin);
+        System.out.println("REZULTAT = " + response);
+        return response != null ? ResponseEntity.status(HttpStatus.OK).body(response)
+                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
+    }
 
 }

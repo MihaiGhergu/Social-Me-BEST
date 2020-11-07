@@ -8,5 +8,5 @@ import lombok.Data;
 public class TopicResponseDTO {
     private Long id;
     private String topicTitle;
-    private Long ownerId;
+    private String ownerNickname;
 }

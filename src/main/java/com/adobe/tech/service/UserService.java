@@ -1,12 +1,13 @@
 package com.adobe.tech.service;
 
+import com.adobe.tech.model.dto.UserLoginDTO;
 import com.adobe.tech.repository.UserRespository;
 import com.adobe.tech.model.User;
 import com.adobe.tech.model.dto.UserRequestDTO;
 import com.adobe.tech.model.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.*;
 
 @AllArgsConstructor
@@ -14,14 +15,16 @@ import java.util.*;
 public class UserService {
 
     private UserRespository userRespository;
+    private PasswordEncoder passwordEncoder;
 
     public UserResponseDTO save(UserRequestDTO person) {
         if(!this.checkUser(person)) {
             return null;
         }
+        String encryptedPassword = passwordEncoder.encode(person.getPassword());
         User newUser = userRespository.save(
                 new User(person.getIsArtist(), person.getNickname(), person.getFirstName(),
-                            person.getLastName(), person.getEmail(), person.getPassword(),
+                            person.getLastName(), person.getEmail(), encryptedPassword,
                             person.getPhoneNumber(), person.getLatitude(), person.getLongitude(),
                             person.getInterests()));
         return  new UserResponseDTO(newUser.getId(), newUser.getIsArtist(),
@@ -92,17 +95,24 @@ public class UserService {
                 userDistances.put(crtUser.getId(), dist);
             }
         }
-
 //         for (Map.Entry<Long, Double> entry : userDistances.entrySet()) {
 //            System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
 //        }
-
         Set<Long> result = new HashSet<>();
         for (Map.Entry<Long, Double> entry : entriesSortedByValues(userDistances)) {
             result.add(entry.getKey());
         }
 
         return result;
+    }
+
+    public String checkCredentials(UserLoginDTO credentials) {
+        User user = userRespository.getUserByEmail(credentials.getEmail());
+        if (user == null)
+            return null;
+        if (user.getPassword().compareTo(passwordEncoder.encode(credentials.getPassword())) != 0)
+            return  null;
+        return UUID.randomUUID().toString();
     }
 //
 //    public List<BankAccountResponseDTO> getAll() {

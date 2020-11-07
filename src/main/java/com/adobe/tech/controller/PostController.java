@@ -2,6 +2,7 @@ package com.adobe.tech.controller;
 
 import com.adobe.tech.model.dto.PostRequestDTO;
 import com.adobe.tech.model.dto.PostResponseDTO;
+import com.adobe.tech.repository.SessionRepository;
 import com.adobe.tech.service.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping(path = "/socialme/posts")
 public class PostController {
     private PostService postService;
+    private SessionRepository sessionRepository;
 
     @PostMapping
     public ResponseEntity createPost(@RequestBody PostRequestDTO post) {
@@ -23,8 +25,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deletePostById(@PathVariable Long id) {
+    @DeleteMapping("/{token}")
+    public ResponseEntity deletePostById(@PathVariable String token) {
+        Long id = sessionRepository.getSessionByToken(token).getUserId();
+        if (id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
         if(postService.deleteById(id))
             return ResponseEntity.status(HttpStatus.OK).body("Post with id = "+id+ " successfully deleted");
         else
@@ -45,16 +50,22 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PostMapping("/{id}/{user_id}/like")
-    public ResponseEntity likePost(@PathVariable Long id, @PathVariable Long user_id) {
+    @PostMapping("/{id}/{user_token}/like")
+    public ResponseEntity likePost(@PathVariable Long id, @PathVariable String user_token) {
+        Long user_id = sessionRepository.getSessionByToken(user_token).getUserId();
+        if (id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
         if(postService.likePost(id, user_id))
             return ResponseEntity.status(HttpStatus.OK).body("Post with id succesfully liked by "+user_id);
         else
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No such post");
     }
 
-    @PostMapping("/{id}/{user_id}/dislike")
-    public ResponseEntity dislikePost(@PathVariable Long id, @PathVariable Long user_id) {
+    @PostMapping("/{id}/{user_token}/dislike")
+    public ResponseEntity dislikePost(@PathVariable Long id, @PathVariable String user_token) {
+        Long user_id = sessionRepository.getSessionByToken(user_token).getUserId();
+        if (id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
         if(postService.dislikePost(id, user_id))
             return ResponseEntity.status(HttpStatus.OK).body("Post with id succesfully disliked by "+user_id);
         else

@@ -2,6 +2,7 @@ package com.adobe.tech.controller;
 
 import com.adobe.tech.model.dto.TopicRequestDTO;
 import com.adobe.tech.model.dto.TopicResponseDTO;
+import com.adobe.tech.repository.SessionRepository;
 import com.adobe.tech.service.TopicService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping(path = "/socialme/topics")
 public class TopicController {
     private TopicService topicService;
+    private SessionRepository sessionRepository;
 
     @PostMapping
     public ResponseEntity createTopic(@RequestBody TopicRequestDTO topic) {
@@ -23,8 +25,11 @@ public class TopicController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTopic);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteTopicById(@PathVariable Long id) {
+    @DeleteMapping("/{token}")
+    public ResponseEntity deleteTopicById(@PathVariable String token) {
+        Long id = sessionRepository.getSessionByToken(token).getUserId();
+        if (id == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
         if(topicService.deleteById(id))
             return ResponseEntity.status(HttpStatus.OK).body("Topic with id = "+id+ " successfully deleted");
         else

@@ -18,12 +18,12 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String topicTitle;
-    private Long ownerId;
+    private String ownerNickname;
     private ArrayList<Post> posts;
 
-    public Topic(String topicTitle, Long ownerId) {
+    public Topic(String topicTitle, String ownerNickname) {
         this.topicTitle = topicTitle;
-        this.ownerId = ownerId;
+        this.ownerNickname = ownerNickname;
         this.posts = new ArrayList<>();
     }
 

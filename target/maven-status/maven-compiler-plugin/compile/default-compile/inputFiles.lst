@@ -1,19 +1,22 @@
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\SpringMainApplication.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\Topic.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\PostRequestDTO.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\TopicResponseDTO.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\Post.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\controller\TopicController.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\controller\PostController.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\UserResponseDTO.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\service\UserService.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\controller\UserController.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\UserRequestDTO.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\service\TopicService.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\repository\UserRespository.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\TopicRequestDTO.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\User.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\repository\TopicRepository.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\service\PostService.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\PostResponseDTO.java
-C:\Users\andrei.dumitru1012\Desktop\Social-Me-BEST\src\main\java\com\adobe\tech\repository\PostRepository.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\UserLoginDTO.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\User.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\Post.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\PostRequestDTO.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\SpringMainApplication.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\repository\UserRespository.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\service\UserService.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\UserRequestDTO.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\service\TopicService.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\repository\SessionRepository.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\TopicRequestDTO.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\repository\PostRepository.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\TopicResponseDTO.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\service\PostService.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\PostResponseDTO.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\dto\UserResponseDTO.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\Topic.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\repository\TopicRepository.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\controller\TopicController.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\controller\PostController.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\model\Session.java
+C:\Users\mihai\Desktop\Social Me\Social-Me-BEST\src\main\java\com\adobe\tech\controller\UserController.java

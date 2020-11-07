@@ -8,5 +8,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class TopicRequestDTO {
     private String topicTitle;
-    private Long ownerId;
+    private String token;
 }
