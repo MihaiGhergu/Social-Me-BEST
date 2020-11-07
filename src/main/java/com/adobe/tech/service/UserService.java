@@ -7,8 +7,7 @@ import com.adobe.tech.model.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -23,8 +22,8 @@ public class UserService {
         User newUser = userRespository.save(
                 new User(person.getIsArtist(), person.getNickname(), person.getFirstName(),
                             person.getLastName(), person.getEmail(), person.getPassword(),
-                            person.getPhoneNumber(), person.getLocation(), person.getInterests(),
-                            person.getSubscriptions()));
+                            person.getPhoneNumber(), person.getLatitude(), person.getLongitude(),
+                            person.getInterests(), person.getSubscriptions()));
         return  new UserResponseDTO(newUser.getId(), newUser.getIsArtist(),
                 newUser.getNickname(), newUser.getFirstName());
     }
@@ -46,13 +45,48 @@ public class UserService {
         return result;
     }
 
-
-
     public boolean deleteById(Long id) {
         if(!userRespository.findById(id).isPresent())
             return false;
         userRespository.deleteById(id);
         return true;
+    }
+
+    public static double distance(double lat1, double lat2, double lon1, double lon2) {
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c * 1000; // convert to meters
+        distance = Math.pow(distance, 2);
+
+        return Math.sqrt(distance);
+    }
+
+    public List<UserResponseDTO> getClose(Long id) {
+        List<UserResponseDTO> result = new ArrayList<>();
+        User user = userRespository.getUserById(id);
+        double latitude = user.getLatitude();
+        double longitude = user.getLongitude();
+        Map<Long, Double> userDistances = new HashMap<>(
+            new Comparator<Double>() {
+                public int compare(Double d1, Double d2) {
+                    return d1.compareTo(d2);
+                }
+            }
+        );
+        List<UserResponseDTO> allUsers = userRespository.getAll();
+        for (UserResponseDTO crtUser : allUsers) {
+            if(crtUser.getId() != id) {
+                double dist = distance(latitude, crtUser.getLatitude(), longitude, crtUser.getLongitude());
+                userDistances.put(crtUser.getId(), dist);
+            }
+        }
+
     }
 //
 //    public List<BankAccountResponseDTO> getAll() {

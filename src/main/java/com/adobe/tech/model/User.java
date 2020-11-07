@@ -24,14 +24,15 @@ public class User {
     private String email;
     private String password;
     private String phoneNumber;
-    private String location;
+    private String latitude;
+    private String longitude;
     @ElementCollection(targetClass=String.class)
     @MapKeyColumn(name="Interest_points")
     private Map<String, Integer> interests;
     private ArrayList<Integer> subscriptions;
 
-    public User(Boolean isArtist, String nickname, String firstName, String lastName,
-                String email, String password, String phoneNumber, String location,
+    public User(Boolean isArtist, String nickname, String firstName, String lastName, String email,
+                String password, String phoneNumber, String latitude, String longitude,
                 Map<String, Integer> interests, ArrayList<Integer> subscriptions) {
 
         this.isArtist = isArtist;
@@ -41,7 +42,8 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.interests = new HashMap<>();
         this.subscriptions = new ArrayList<>();
     }

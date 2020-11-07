@@ -45,6 +45,13 @@ public class UserController {
         System.out.println("TOATE = "+response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @GetMapping("/close/{id}")
+    public ResponseEntity getCloseUsers(@PathVariable Long id) {
+        List<UserResponseDTO> response = userService.getClose(id);
+        System.out.println("IN APROPIERE : "+ response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 //
 //    @PostMapping("/login")
 //    public ResponseEntity loginUser(@RequestBody BankAccountRequestDTO accountLogin) {
