@@ -1,5 +1,6 @@
 package com.adobe.tech.controller;
 
+import com.adobe.tech.model.dto.TokenDTO;
 import com.adobe.tech.model.dto.UserLoginDTO;
 import com.adobe.tech.model.dto.UserRequestDTO;
 import com.adobe.tech.repository.SessionRepository;
@@ -23,8 +24,10 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity registerPerson(@RequestBody UserRequestDTO person) {
+
         System.out.println("Am primit un register\n");
         UserResponseDTO savedAccount = userService.save(person);
+        System.out.println(savedAccount);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAccount);
     }
 
@@ -52,10 +55,12 @@ public class UserController {
 
     @GetMapping("/close/{token}")
     public ResponseEntity getCloseUsers(@PathVariable String token) {
+        System.out.println("GET NEARBYYY");
         Long id = sessionRepository.getSessionByToken(token).getUserId();
         if (id == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
-        Set<Long> response = userService.getClose(id);
+        System.out.println("ID = "+id);
+        Set<UserResponseDTO> response = userService.getClose(id);
         System.out.println("IN APROPIERE : "+ response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -64,7 +69,7 @@ public class UserController {
     public ResponseEntity loginUser(@RequestBody UserLoginDTO accountLogin) {
         String response = userService.checkCredentials(accountLogin);
         System.out.println("REZULTAT = " + response);
-        return response != null ? ResponseEntity.status(HttpStatus.OK).body(response)
+        return response != null ? ResponseEntity.status(HttpStatus.OK).body(new TokenDTO(response))
                 : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
     }
 

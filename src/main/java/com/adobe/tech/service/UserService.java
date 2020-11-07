@@ -9,7 +9,6 @@ import com.adobe.tech.model.dto.UserRequestDTO;
 import com.adobe.tech.model.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.*;
 
 @AllArgsConstructor
@@ -83,8 +82,9 @@ public class UserService {
         return sortedEntries;
     }
 
-    public Set<Long> getClose(Long id) {
+    public Set<UserResponseDTO> getClose(Long id) {
         User user = userRespository.getUserById(id);
+        System.out.println(user);
         double latitude = Double.parseDouble(user.getLatitude());
         double longitude = Double.parseDouble(user.getLongitude());
         Map<Long, Double> userDistances = new TreeMap<>();
@@ -101,15 +101,18 @@ public class UserService {
 //         for (Map.Entry<Long, Double> entry : userDistances.entrySet()) {
 //            System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
 //        }
-        Set<Long> result = new HashSet<>();
+        Set<UserResponseDTO> result = new HashSet<>();
         for (Map.Entry<Long, Double> entry : entriesSortedByValues(userDistances)) {
-            result.add(entry.getKey());
+            User myuser = userRespository.getUserById(entry.getKey());
+            result.add(new UserResponseDTO(myuser.getId(), myuser.getIsArtist(), myuser.getNickname(),
+                    myuser.getFirstName(), myuser.getLatitude(), myuser.getLongitude()));
         }
 
         return result;
     }
 
     public String checkCredentials(UserLoginDTO credentials) {
+        System.out.println("AM PRIMIT CREDENTIALS "+credentials);
         User user = userRespository.getUserByEmail(credentials.getEmail());
         if (user == null)
             return null;

@@ -14,10 +14,6 @@
     <artifactId>app</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
         <!-- Database dependencies -->
         <dependency>
             <groupId>com.h2database</groupId>

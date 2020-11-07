@@ -15,6 +15,7 @@ import javax.persistence.*;
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long Id;
     private Long userId;
     private String token;
 
