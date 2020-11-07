@@ -18,5 +18,5 @@ public class UserRequestDTO {
     private String phoneNumber;
     private String latitude;
     private String longitude;
-    private Map<String, Integer> interests;
+    private ArrayList<Integer> interests;
 }

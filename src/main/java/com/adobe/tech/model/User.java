@@ -1,9 +1,6 @@
 package com.adobe.tech.model;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -13,6 +10,8 @@ import java.util.*;
 @NoArgsConstructor
 @Data
 @ToString
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,14 +25,12 @@ public class User {
     private String phoneNumber;
     private String latitude;
     private String longitude;
-    @ElementCollection(targetClass=String.class)
-    @MapKeyColumn(name="Interest_points")
-    private Map<String, Integer> interests;
+    private ArrayList<Integer> interests;
     private ArrayList<Integer> subscriptions;
 
     public User(Boolean isArtist, String nickname, String firstName, String lastName, String email,
                 String password, String phoneNumber, String latitude, String longitude,
-                Map<String, Integer> interests) {
+                ArrayList<Integer> interests) {
 
         this.isArtist = isArtist;
         this.nickname = nickname;
@@ -44,7 +41,7 @@ public class User {
         this.password = password;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.interests = new HashMap<>();
+        this.interests = new ArrayList<>();
         this.subscriptions = new ArrayList<>();
     }
 

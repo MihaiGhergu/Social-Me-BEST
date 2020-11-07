@@ -1,6 +1,8 @@
 package com.adobe.tech.service;
 
+import com.adobe.tech.model.Session;
 import com.adobe.tech.model.dto.UserLoginDTO;
+import com.adobe.tech.repository.SessionRepository;
 import com.adobe.tech.repository.UserRespository;
 import com.adobe.tech.model.User;
 import com.adobe.tech.model.dto.UserRequestDTO;
@@ -15,16 +17,17 @@ import java.util.*;
 public class UserService {
 
     private UserRespository userRespository;
-    private PasswordEncoder passwordEncoder;
+    private SessionRepository sessionRepository;
+
+
 
     public UserResponseDTO save(UserRequestDTO person) {
         if(!this.checkUser(person)) {
             return null;
         }
-        String encryptedPassword = passwordEncoder.encode(person.getPassword());
         User newUser = userRespository.save(
                 new User(person.getIsArtist(), person.getNickname(), person.getFirstName(),
-                            person.getLastName(), person.getEmail(), encryptedPassword,
+                            person.getLastName(), person.getEmail(), person.getPassword(),
                             person.getPhoneNumber(), person.getLatitude(), person.getLongitude(),
                             person.getInterests()));
         return  new UserResponseDTO(newUser.getId(), newUser.getIsArtist(),
@@ -110,9 +113,14 @@ public class UserService {
         User user = userRespository.getUserByEmail(credentials.getEmail());
         if (user == null)
             return null;
-        if (user.getPassword().compareTo(passwordEncoder.encode(credentials.getPassword())) != 0)
+        if (user.getPassword().compareTo(credentials.getPassword()) != 0)
             return  null;
-        return UUID.randomUUID().toString();
+        String token = UUID.randomUUID().toString();
+        sessionRepository.save(new Session(user.getId(), token));
+        user.setLatitude(credentials.getLatitude());
+        user.setLongitude(credentials.getLongitude());
+        userRespository.save(user);
+        return token;
     }
 //
 //    public List<BankAccountResponseDTO> getAll() {
