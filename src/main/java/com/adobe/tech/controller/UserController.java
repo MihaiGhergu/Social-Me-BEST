@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
 @RestController
@@ -48,7 +49,7 @@ public class UserController {
 
     @GetMapping("/close/{id}")
     public ResponseEntity getCloseUsers(@PathVariable Long id) {
-        List<UserResponseDTO> response = userService.getClose(id);
+        Set<Long> response = userService.getClose(id);
         System.out.println("IN APROPIERE : "+ response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

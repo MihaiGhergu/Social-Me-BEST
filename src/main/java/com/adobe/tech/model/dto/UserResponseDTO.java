@@ -10,4 +10,6 @@ public class UserResponseDTO {
     private Boolean isArtist;
     private String nickname;
     private String firstName;
+    private String latitude;
+    private String longitude;
 }

@@ -25,7 +25,7 @@ public class UserService {
                             person.getPhoneNumber(), person.getLatitude(), person.getLongitude(),
                             person.getInterests(), person.getSubscriptions()));
         return  new UserResponseDTO(newUser.getId(), newUser.getIsArtist(),
-                newUser.getNickname(), newUser.getFirstName());
+                newUser.getNickname(), newUser.getFirstName(), newUser.getLatitude(), newUser.getLongitude());
     }
 
     public Boolean checkUser(UserRequestDTO logAccount) {
@@ -41,7 +41,7 @@ public class UserService {
     public List<UserResponseDTO> getAll() {
         List<UserResponseDTO> result = new ArrayList<>();
         userRespository.findAll().forEach(x->result.add(new UserResponseDTO(x.getId(), x.getIsArtist(),
-                                             x.getNickname(), x.getFirstName())));
+                                             x.getNickname(), x.getFirstName(), x.getLatitude(), x.getLongitude())));
         return result;
     }
 
@@ -67,26 +67,23 @@ public class UserService {
         return Math.sqrt(distance);
     }
 
-    public List<UserResponseDTO> getClose(Long id) {
-        List<UserResponseDTO> result = new ArrayList<>();
+    public Set<Long> getClose(Long id) {
         User user = userRespository.getUserById(id);
-        double latitude = user.getLatitude();
-        double longitude = user.getLongitude();
-        Map<Long, Double> userDistances = new HashMap<>(
-            new Comparator<Double>() {
-                public int compare(Double d1, Double d2) {
-                    return d1.compareTo(d2);
-                }
-            }
-        );
-        List<UserResponseDTO> allUsers = userRespository.getAll();
+        double latitude = Double.parseDouble(user.getLatitude());
+        double longitude = Double.parseDouble(user.getLongitude());
+        Map<Long, Double> userDistances = new TreeMap<>();
+        List<UserResponseDTO> allUsers = getAll();
         for (UserResponseDTO crtUser : allUsers) {
             if(crtUser.getId() != id) {
-                double dist = distance(latitude, crtUser.getLatitude(), longitude, crtUser.getLongitude());
+                double dist = distance(latitude,
+                                        Double.parseDouble(crtUser.getLatitude()),
+                                        longitude,
+                                        Double.parseDouble(crtUser.getLongitude()));
                 userDistances.put(crtUser.getId(), dist);
             }
         }
 
+        return userDistances.keySet();
     }
 //
 //    public List<BankAccountResponseDTO> getAll() {
