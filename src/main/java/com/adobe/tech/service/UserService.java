@@ -70,7 +70,7 @@ public class UserService {
 
     public static double similarity(ArrayList<Integer> interests1, ArrayList<Integer> interests2) {
         double similarityIndex = 0.0;
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 4; i++)
             similarityIndex += (interests1.get(i) - interests2.get(i)) * (interests1.get(i) - interests2.get(i));
 
         return Math.sqrt(similarityIndex);
@@ -89,7 +89,7 @@ public class UserService {
         return sortedEntries;
     }
 
-    public Set<UserResponseDTO> getClose(Long id) {
+    public ArrayList<UserResponseDTO> getClose(Long id) {
         User user = userRespository.getUserById(id);
         double latitude = Double.parseDouble(user.getLatitude());
         double longitude = Double.parseDouble(user.getLongitude());
@@ -108,7 +108,7 @@ public class UserService {
         return getUsersSorted(userDistances);
     }
 
-    public Set<UserResponseDTO> getSimilar(Long id) {
+    public ArrayList<UserResponseDTO> getSimilar(Long id) {
         User user = userRespository.getUserById(id);
         ArrayList<Integer> interests = user.getInterests();
         Map<Long, Double> userSimilarities = new TreeMap<>();
@@ -116,6 +116,7 @@ public class UserService {
         for (UserResponseDTO crtUser : allUsers) {
             if(!crtUser.getId().equals(id)) {
                 double similarity = similarity(interests, crtUser.getInterests());
+                System.out.println("Similarity "+similarity+ " "+crtUser.getNickname());
                 userSimilarities.put(crtUser.getId(), similarity);
             }
         }
@@ -123,12 +124,17 @@ public class UserService {
         return getUsersSorted(userSimilarities);
     }
 
-    private Set<UserResponseDTO> getUsersSorted(Map<Long, Double> usersMap) {
-        Set<UserResponseDTO> result = new HashSet<>();
+    private ArrayList<UserResponseDTO> getUsersSorted(Map<Long, Double> usersMap) {
+        ArrayList<UserResponseDTO> result = new ArrayList<>();
+        int count = 0;
         for (Map.Entry<Long, Double> entry : entriesSortedByValues(usersMap)) {
             User myuser = userRespository.getUserById(entry.getKey());
+            System.out.println(count+""+myuser);
             result.add(new UserResponseDTO(myuser.getId(), myuser.getIsArtist(), myuser.getNickname(),
                     myuser.getFirstName(), myuser.getLatitude(), myuser.getLongitude(), myuser.getInterests()));
+            count++;
+            if(count == 3)
+                break;
         }
 
         return result;

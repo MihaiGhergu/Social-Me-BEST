@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +34,8 @@ public class UserController {
         System.out.println("Am primit un register\n");
         UserResponseDTO savedAccount = userService.save(person);
         System.out.println(savedAccount);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAccount);
+        return savedAccount != null ? ResponseEntity.status(HttpStatus.CREATED).body(savedAccount):
+                ResponseEntity.status(HttpStatus.FORBIDDEN).body("");
     }
 
     @DeleteMapping("/{id}")
@@ -64,7 +66,7 @@ public class UserController {
         if (id == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
         System.out.println("ID = "+id);
-        Set<UserResponseDTO> response = userService.getClose(id);
+        ArrayList<UserResponseDTO> response = userService.getClose(id);
         System.out.println("IN APROPIERE : "+ response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -74,7 +76,7 @@ public class UserController {
         Long id = sessionRepository.getSessionByToken(token).getUserId();
         if (id == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
-        Set<UserResponseDTO> response = userService.getSimilar(id);
+        ArrayList<UserResponseDTO> response = userService.getSimilar(id);
         System.out.println("SIMILARI : "+ response);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

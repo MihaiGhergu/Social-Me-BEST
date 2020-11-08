@@ -41,7 +41,7 @@ public class User {
         this.password = password;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.interests = new ArrayList<>();
+        this.interests = interests;
         this.subscriptions = new ArrayList<>();
     }
 
