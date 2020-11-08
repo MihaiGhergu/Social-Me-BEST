@@ -1,0 +1,84 @@
+[33mcommit 475b1fd2c7b097ae1403cf45abb5c17fb218ac20[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: RazvanAlexandruNicu <razvanalexandrunicu@gmail.com>
+Date:   Sun Nov 8 09:51:46 2020 +0200
+
+    Last changes
+
+[33mcommit f4e8dddfe76f4c7dde73ba9877a353efb026e62e[m
+Author: Mihai Ghergu <56366365+MihaiGhergu@users.noreply.github.com>
+Date:   Sun Nov 8 08:07:20 2020 +0200
+
+    added
+
+[33mcommit 4fdba099e10bd3c8cb7e175445cb44fa0de7352b[m
+Merge: f49728e ba9d3e5
+Author: Andrei-Tiberiu Dumitru <dtiberiu100@gmail.com>
+Date:   Sun Nov 8 01:13:27 2020 +0200
+
+    Merge remote-tracking branch 'origin/main' into main
+
+[33mcommit f49728e1d6b6cbc7a23c31ba1329438b85b5cd5d[m
+Author: Andrei-Tiberiu Dumitru <dtiberiu100@gmail.com>
+Date:   Sun Nov 8 01:12:43 2020 +0200
+
+    Add similarity between users based on interests
+
+[33mcommit ba9d3e52444813037cf0fd71e87fafe9853cd074[m
+Author: RazvanAlexandruNicu <razvanalexandrunicu@gmail.com>
+Date:   Sun Nov 8 00:34:25 2020 +0200
+
+    First Frotend commit
+
+[33mcommit 9fd6a431735b4ef57e051eb43ea4e246b37d190b[m
+Author: RazvanAlexandruNicu <razvanalexandrunicu@gmail.com>
+Date:   Sun Nov 8 00:29:28 2020 +0200
+
+    Midnight sync. Backend + frontend login functional + retrieve close users
+
+[33mcommit d49fc8a4ad5e9f2522b8ce7120a1873fd63dd4c4[m
+Author: Mihai Ghergu <56366365+MihaiGhergu@users.noreply.github.com>
+Date:   Sat Nov 7 22:48:19 2020 +0200
+
+    created errors
+
+[33mcommit 224863a40fde95c8d936cbd357a4435e420f0375[m
+Author: Mihai Ghergu <56366365+MihaiGhergu@users.noreply.github.com>
+Date:   Sat Nov 7 21:40:23 2020 +0200
+
+    Added token
+
+[33mcommit 34d3f7022768858c63f0ce28377cbf2a8bf0e444[m
+Author: Andrei-Tiberiu Dumitru <dtiberiu100@gmail.com>
+Date:   Sat Nov 7 19:32:45 2020 +0200
+
+    Fixed proximity users sort v2
+
+[33mcommit 531e845441274661eb673e62ef94084380c1c4c2[m
+Author: Andrei-Tiberiu Dumitru <dtiberiu100@gmail.com>
+Date:   Sat Nov 7 18:42:45 2020 +0200
+
+    Add proximity for users v2
+
+[33mcommit 6d89ab337e081caacd1668140c6f257f3b6c791b[m
+Author: Andrei-Tiberiu Dumitru <dtiberiu100@gmail.com>
+Date:   Sat Nov 7 17:53:05 2020 +0200
+
+    Add proximity for users
+
+[33mcommit 3db9836ec8b18dc7a2c6afdb7efb065dc92165ec[m
+Author: Andrei-Tiberiu Dumitru <41072040+TibiDumitru@users.noreply.github.com>
+Date:   Sat Nov 7 15:57:55 2020 +0200
+
+    Update README.md
+
+[33mcommit b8ad054565282e4e425efcc1e6c02f656b43578b[m
+Author: RazvanAlexandruNicu <razvanalexandrunicu@gmail.com>
+Date:   Sat Nov 7 15:57:03 2020 +0200
+
+    Initial commit backend
+
+[33mcommit 9b737f6af2234901809ea83c787fe2d968786bc0[m
+Author: Andrei-Tiberiu Dumitru <41072040+TibiDumitru@users.noreply.github.com>
+Date:   Sat Nov 7 12:13:10 2020 +0200
+
+    Initial commit
