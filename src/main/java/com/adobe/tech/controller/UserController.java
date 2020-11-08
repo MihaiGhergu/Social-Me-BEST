@@ -1,9 +1,12 @@
 package com.adobe.tech.controller;
 
+import com.adobe.tech.model.Session;
+import com.adobe.tech.model.User;
 import com.adobe.tech.model.dto.TokenDTO;
 import com.adobe.tech.model.dto.UserLoginDTO;
 import com.adobe.tech.model.dto.UserRequestDTO;
 import com.adobe.tech.repository.SessionRepository;
+import com.adobe.tech.repository.UserRespository;
 import com.adobe.tech.service.UserService;
 import com.adobe.tech.model.dto.UserResponseDTO;
 import lombok.AllArgsConstructor;
@@ -11,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +25,7 @@ import java.util.Set;
 public class UserController {
     private UserService userService;
     private SessionRepository sessionRepository;
+    private UserRespository userRespository;
 
     @PostMapping("/register")
     public ResponseEntity registerPerson(@RequestBody UserRequestDTO person) {
@@ -80,6 +85,19 @@ public class UserController {
         System.out.println("REZULTAT = " + response);
         return response != null ? ResponseEntity.status(HttpStatus.OK).body(new TokenDTO(response))
                 : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error");
+    }
+
+    @GetMapping("/checkToken/{token}")
+    public ResponseEntity checkToken(@PathVariable String token) {
+        Session session = sessionRepository.getSessionByToken(token);
+        if (session == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid session!");
+        Long userId = session.getUserId();
+        User myuser = userRespository.getUserById(userId);
+
+        UserResponseDTO user = new UserResponseDTO(myuser.getId(), myuser.getIsArtist(), myuser.getNickname(),
+                myuser.getFirstName(), myuser.getLatitude(), myuser.getLongitude(), myuser.getInterests());
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
 }
